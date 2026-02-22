@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SAMI // cyber nexus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --neon-blue: #00f3ff;
+      --neon-red: #ff0055;
+      --dark-bg: #0a0015;
+      --grid: rgba(0, 243, 255, 0.04);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background: var(--dark-bg);
+      background-image: 
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 40px 40px;
+      font-family: 'Share Tech Mono', monospace;
+      color: #eee;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Scanlines overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        rgba(0,0,0,0.08) 1px,
+        transparent 2px
+      );
+      pointer-events: none;
+      z-index: 9999;
+      animation: scan 8s linear infinite;
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(5rem, 18vw, 14rem);
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      position: relative;
+      display: inline-block;
+      margin: 0.2em 0;
+    }
+
+    /* Main SAMI text - blue base with red glitch layers */
+    .glitch {
+      color: var(--neon-blue);
+      text-shadow: 
+        0 0 10px var(--neon-blue),
+        0 0 30px var(--neon-blue),
+        0 0 60px var(--neon-blue),
+        0 0 100px rgba(0,243,255,0.4);
+      animation: flicker 4s infinite alternate, neon-glow-blue 2.5s infinite alternate;
+    }
+
+    /* Red glitch layer */
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.8;
+    }
+
+    .glitch::before {
+      color: var(--neon-red);
+      text-shadow: 
+        0 0 10px var(--neon-red),
+        0 0 30px var(--neon-red),
+        0 0 60px var(--neon-red);
+      left: 2px;
+      animation: glitch-anim-1 3s infinite linear alternate-reverse;
+      clip-path: inset(0 0 0 0);
+    }
+
+    .glitch::after {
+      color: var(--neon-red);
+      text-shadow: 
+        0 0 10px var(--neon-red),
+        0 0 30px var(--neon-red);
+      left: -2px;
+      animation: glitch-anim-2 2.8s infinite linear alternate-reverse;
+      clip-path: inset(0 0 0 0);
+    }
+
+    /* Hover intensifies glitch & glow */
+    .glitch:hover {
+      animation: none;
+      text-shadow: 
+        0 0 20px var(--neon-blue),
+        0 0 60px var(--neon-blue),
+        0 0 120px var(--neon-blue);
+    }
+
+    .glitch:hover::before,
+    .glitch:hover::after {
+      animation-duration: 0.15s;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes glitch-anim-1 {
+      0%   { clip: rect(42px, 9999px, 84px, 0); transform: skew(0.4deg); }
+      5%   { clip: rect(17px, 9999px, 94px, 0); transform: skew(0.2deg); }
+      10%  { clip: rect(63px, 9999px, 102px, 0); transform: skew(-0.6deg); }
+      15%  { clip: rect(30px, 9999px, 87px, 0); transform: skew(0.8deg); }
+      20%  { clip: rect(75px, 9999px, 130px, 0); transform: skew(-0.3deg); }
+      100% { clip: rect(91px, 9999px, 98px, 0); transform: skew(0.1deg); }
+    }
+
+    @keyframes glitch-anim-2 {
+      0%   { clip: rect(65px, 9999px, 119px, 0); transform: skew(-0.2deg); }
+      5%   { clip: rect(8px, 9999px, 29px, 0); transform: skew(0.7deg); }
+      10%  { clip: rect(51px, 9999px, 73px, 0); transform: skew(-0.5deg); }
+      100% { clip: rect(33px, 9999px, 105px, 0); transform: skew(0.4deg); }
+    }
+
+    @keyframes flicker {
+      0%,19%,21%,23%,25%,54%,56%,100% { opacity: 1; }
+      20%,24%,55% { opacity: 0.4; }
+    }
+
+    @keyframes neon-glow-blue {
+      from { text-shadow: 0 0 10px var(--neon-blue), 0 0 30px var(--neon-blue), 0 0 60px var(--neon-blue); }
+      to   { text-shadow: 0 0 20px var(--neon-blue), 0 0 50px var(--neon-blue), 0 0 100px var(--neon-blue); }
+    }
+
+    .subtitle {
+      font-size: 1.6rem;
+      color: var(--neon-red);
+      letter-spacing: 0.4em;
+      margin-top: 1rem;
+      opacity: 0.9;
+      text-shadow: 0 0 15px var(--neon-red);
+    }
+
+    .tag {
+      margin-top: 4rem;
+      font-size: 1.1rem;
+      color: #888;
+      text-shadow: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="glitch" data-text="SAMI">SAMI</h1>
+    <div class="subtitle">CYBER NEXUS ACTIVATED</div>
+    <div class="tag">sami.ami.bd // online since 2026</div>
+  </div>
+</body>
+</html>
